@@ -10,7 +10,7 @@ import "./styles.css";
 
 import GoogleLogin from 'react-google-login';
 import { GoogleLogout } from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
+import { FacebookProvider, LoginButton } from 'react-facebook';
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -96,7 +96,27 @@ export default class Login extends React.Component {
 
     responseFacebook(response) {
         console.log(response)
-      }
+        let params = {
+            "user": {
+                "email": response.profile.email,
+                "username": response.tokenDetail.userID,
+                "image": response.profile.picture.data.url,
+            }
+        }
+
+        return fetch(url + "users/loginSocial", {
+            method: 'post',
+            body: JSON.stringify(params),
+            headers: {
+                // "Authorization": token,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(localStorage.setItem("loginFB", JSON.stringify(response.profile)))
+            .then(alert("Đăng nhập thành công"))
+            .then(this.props.history.push("/"))
+    }
 
     render() {
         const { searchText, books } = this.state
@@ -141,12 +161,16 @@ export default class Login extends React.Component {
                                 onLogoutSuccess={this.logout}
                             >
                             </GoogleLogout>
-                            <FacebookLogin
-                                appId="589858161579560"
-                                autoLoad={true}
-                                fields="name,email,picture"
-                                callback={this.responseFacebook}
-                            />
+                            <FacebookProvider appId="589858161579560">
+                                <LoginButton
+                                    scope="email"
+                                    onCompleted={this.responseFacebook}
+                                    onError={this.handleError}
+                                >
+                                    <span>Login Facebook</span>
+                                </LoginButton>
+                            </FacebookProvider>
+                            {/* 589858161579560 */}
                         </Col>
                     </Col>
                 </Row>

@@ -39,9 +39,9 @@ export default class Header extends React.Component {
     }
 
     componentDidMount() {
-        if (localStorage.getItem("loginGoogle")) {
+        if (localStorage.getItem("loginFB")) {
             this.setState({
-                user: JSON.parse(localStorage.getItem("loginGoogle")),
+                user: JSON.parse(localStorage.getItem("loginFB")),
             })
         }
     }
@@ -62,11 +62,11 @@ export default class Header extends React.Component {
                         </Col>
                         <Col span={6}>
                             <div className="container-right">
-                                {localStorage.getItem("loginGoogle") && <Dropdown overlay={menu} placement="bottomRight">
+                                {localStorage.getItem("loginFB") && <Dropdown overlay={menu} placement="bottomRight">
                                     <img className="img" src={imgSrc} />
                                 </Dropdown>}
-                                {localStorage.getItem("loginGoogle") && <p style={{color:'white',marginTop:'10px'}}>{user.familyName} {user.givenName}</p>}
-                                {!localStorage.getItem("loginGoogle") && <Link style={{ color: 'white' }} to="/login">Đăng nhập</Link>}
+                                {localStorage.getItem("loginFB") && <p style={{color:'white',marginTop:'10px'}}>{user.name} </p>}
+                                {!localStorage.getItem("loginFB") && <Link style={{ color: 'white' }} to="/login">Đăng nhập</Link>}
                             </div>
                         </Col>
                     </Row>

@@ -27,6 +27,9 @@ export default class DashBoard extends React.Component {
         if (localStorage.getItem("loginGoogle")) {
             this.setState({user: JSON.parse(localStorage.getItem("loginGoogle"))})
         }
+        if (localStorage.getItem("loginFB")) {
+            this.setState({user: JSON.parse(localStorage.getItem("loginFB"))})
+        }
     }
 
     render() {
@@ -37,7 +40,8 @@ export default class DashBoard extends React.Component {
                     <Header />
                 </div>
                 <div style={{textAlign:'center'}}>
-                    {<h2>Xin chào {user.familyName} {user.givenName}</h2>}
+                    {localStorage.getItem("loginGoogle")&& <h2>Xin chào {user.familyName} {user.givenName}</h2>}
+                    {localStorage.getItem("loginFB")&& <h2>Xin chào {user.name} </h2>}
                 </div>
             </div>
         )
