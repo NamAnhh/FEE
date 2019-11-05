@@ -10,6 +10,7 @@ import "./styles.css";
 
 import GoogleLogin from 'react-google-login';
 import { GoogleLogout } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -60,7 +61,7 @@ export default class Login extends React.Component {
             })
                 .then(res => res.json())
                 .then(alert("Đăng nhập thành công"))
-                .then(localStorage.setItem("loginGoogle",JSON.stringify(response.profileObj)))
+                .then(localStorage.setItem("loginGoogle", JSON.stringify(response.profileObj)))
                 .then(this.props.history.push("/"))
         }
     }
@@ -92,6 +93,10 @@ export default class Login extends React.Component {
     handleRegister = () => {
         this.props.history.push("/register")
     }
+
+    responseFacebook(response) {
+        console.log(response)
+      }
 
     render() {
         const { searchText, books } = this.state
@@ -136,6 +141,12 @@ export default class Login extends React.Component {
                                 onLogoutSuccess={this.logout}
                             >
                             </GoogleLogout>
+                            <FacebookLogin
+                                appId="589858161579560"
+                                autoLoad={true}
+                                fields="name,email,picture"
+                                callback={this.responseFacebook}
+                            />
                         </Col>
                     </Col>
                 </Row>
