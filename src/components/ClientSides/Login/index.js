@@ -68,25 +68,7 @@ export default class Login extends React.Component {
 
     //send email
     handleSendMail = () => {
-        let params = {
-            "user": {
-                "username": "namanh511",
-                "email": "namanhng2605@gmail.com",
-                "password": "1"
-            }
-
-        }
-
-        return fetch(url + "users", {
-            method: 'post',
-            body: JSON.stringify(params),
-            headers: {
-                "Authorization": token,
-                "Content-Type": "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(res => console.log("res", res))
+        this.props.history.push("/")
     }
 
     //go to register
@@ -143,7 +125,7 @@ export default class Login extends React.Component {
                             <Button onClick={this.handleSubmit} type="primary">Đăng nhập</Button>
                             <Button onClick={this.handleSubmit} style={styles.btnCancel} type="primary">Đăng nhập google</Button>
                             <Button onClick={this.handleRegister} style={styles.btnCancel} type="danger">Đăng ký</Button>
-                            <Button onClick={this.handleSendMail} style={styles.btnCancel} type="danger">Send Mail</Button>
+                            <Button onClick={this.handleSendMail} style={styles.btnCancel} type="danger">Go To DashBoard</Button>
                             <GoogleLogin
                                 clientId="450425733304-63045qg18t40ol71eb6insc1bodh38ih.apps.googleusercontent.com"
                                 render={renderProps => (
