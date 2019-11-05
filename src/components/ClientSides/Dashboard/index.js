@@ -4,7 +4,6 @@ import "antd/dist/antd.css";
 import { _validnumber } from '../../helpers/index';
 import { url } from '../../../API/url'
 import { token } from '../../../API/token'
-import "./styles.css";
 import Header from '../Header/index'
 
 const { TextArea } = Input;
