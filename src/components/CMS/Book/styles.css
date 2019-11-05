@@ -1,0 +1,23 @@
+.ant-modal-footer {
+    padding: 10px 24px;
+  }
+  
+  .ant-form-item {
+    margin-bottom: 15px;
+  }
+  
+  .ant-col.ant-form-item-control-wrapper {
+    width: 100%;
+  }
+  
+  .ant-form-item-label {
+    line-height: unset;
+  }
+  i.anticon.anticon-delete {
+    color: red;
+  }
+  button{
+    color: white;
+    background-color: #1890FF;
+  }
+  
