@@ -44,7 +44,7 @@ export default class Editbooks extends React.Component {
         const { book: { name, price, quantity } } = this.state
 
         if (name !== '' && price !== '' && _validnumber(price) && quantity !== '' && _validnumber(quantity)) {
-            return fetch(url + "/books/", {
+            return fetch(url + "books/", {
                 method: 'post',
                 body: JSON.stringify(this.state.book),
                 headers: {
