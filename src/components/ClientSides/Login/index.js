@@ -10,15 +10,47 @@ import "./styles.css";
 
 import GoogleLogin from 'react-google-login';
 import { GoogleLogout } from 'react-google-login';
-import { FacebookProvider, LoginButton } from 'react-facebook';
+// import { FacebookProvider, LoginButton } from 'react-facebook';
+import LoginHOC from 'react-facebook-login-hoc';
 
-export default class Login extends React.Component {
+const configureLoginProps = {
+    scope: 'public_profile',
+    xfbml: false,
+    cookie: false,
+    version: 2.6,
+    language: 'en_US',
+    appId: '589858161579560'
+}
+
+class Login extends React.Component {
     constructor(props) {
         super(props);
+
+        this.status = this.props.fb.status
+        this.login = this.props.fb.login
+        this.logout = this.props.fb.logout
 
         this.state = {
             visible: false
         }
+    }
+
+    getStatus(response) {
+        if (response.authResponse) {
+            this.responseApi.call(this, response.authResponse)
+        }
+    }
+    responseApi(res) {
+        console.log('token:', res.accessToken)
+    }
+    checkLoginState() {
+        this.status(this.getStatus.bind(this))
+    };
+    loginFacebook() {
+        this.login(this.getStatus.bind(this))
+    }
+    logoutFacebook() {
+        this.logout()
     }
 
     componentDidMount() {
@@ -76,6 +108,12 @@ export default class Login extends React.Component {
         this.props.history.push("/register")
     }
 
+    handleLogoutFB = () => {
+        this.setState({
+
+        })
+    }
+
     responseFacebook(response) {
         console.log(response)
         let params = {
@@ -123,6 +161,7 @@ export default class Login extends React.Component {
                         </Form>
                         <Col span={21} style={styles.colButton}>
                             <Button onClick={this.handleSubmit} type="primary">Đăng nhập</Button>
+                            <Button onClick={this.handleLogoutFB} type="primary">Logout fb</Button>
                             <Button onClick={this.handleSubmit} style={styles.btnCancel} type="primary">Đăng nhập google</Button>
                             <Button onClick={this.handleRegister} style={styles.btnCancel} type="danger">Đăng ký</Button>
                             <Button onClick={this.handleSendMail} style={styles.btnCancel} type="danger">Go To DashBoard</Button>
@@ -143,7 +182,7 @@ export default class Login extends React.Component {
                                 onLogoutSuccess={this.logout}
                             >
                             </GoogleLogout>
-                            <FacebookProvider appId="589858161579560">
+                            {/* <FacebookProvider appId="589858161579560">
                                 <LoginButton
                                     scope="email"
                                     onCompleted={this.responseFacebook}
@@ -151,8 +190,12 @@ export default class Login extends React.Component {
                                 >
                                     <span>Login Facebook</span>
                                 </LoginButton>
-                            </FacebookProvider>
+                            </FacebookProvider> */}
+
                             {/* 589858161579560 */}
+                            <button onClick={this.checkLoginState.bind(this)}>Get Facebook Login Status</button>
+                            <button onClick={this.loginFacebook.bind(this)}>Facebook Login</button>
+                            <button onClick={this.logoutFacebook.bind(this)}>Facebook Logout</button>
                         </Col>
                     </Col>
                 </Row>
@@ -161,3 +204,4 @@ export default class Login extends React.Component {
         )
     }
 }
+export default LoginHOC(configureLoginProps)(Login);
