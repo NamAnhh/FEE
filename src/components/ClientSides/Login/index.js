@@ -127,7 +127,7 @@ export default class Login extends React.Component {
                             <Button onClick={this.handleRegister} style={styles.btnCancel} type="danger">Đăng ký</Button>
                             <Button onClick={this.handleSendMail} style={styles.btnCancel} type="danger">Go To DashBoard</Button>
                             <GoogleLogin
-                                clientId="450425733304-63045qg18t40ol71eb6insc1bodh38ih.apps.googleusercontent.com"
+                                clientId="450425733304-43cjhtfko4ag8m7sa4cna7h1n1d1ob8t.apps.googleusercontent.com"
                                 render={renderProps => (
                                     <Button style={styles.btnCancel} type="primary" onClick={renderProps.onClick} disabled={renderProps.disabled}>Login google</Button>
                                 )}
@@ -136,7 +136,7 @@ export default class Login extends React.Component {
                                 cookiePolicy={'single_host_origin'}
                             />
                             <GoogleLogout
-                                clientId="450425733304-63045qg18t40ol71eb6insc1bodh38ih.apps.googleusercontent.com"
+                                clientId="450425733304-43cjhtfko4ag8m7sa4cna7h1n1d1ob8t.apps.googleusercontent.com"
                                 render={renderProps => (
                                     <Button style={styles.btnCancel} type="primary" onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout google</Button>
                                 )}
