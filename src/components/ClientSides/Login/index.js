@@ -105,6 +105,10 @@ export default class Login extends React.Component {
             .then(alert("Đăng nhập thành công"))
             .then(this.props.history.push("/"))
     }
+    
+    onLogout() {
+        window.FB.logout()
+        }
 
     render() {
         const { searchText, books } = this.state
@@ -159,6 +163,7 @@ export default class Login extends React.Component {
                                     <span>Login Facebook</span>
                                 </LoginButton>
                             </FacebookProvider>
+                            <a href="#" onClick={(e)=>{e.preventDefault(); window.FB.logout()}}>logout</a>
 
                             {/* 589858161579560 */}
                         </Col>
