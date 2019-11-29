@@ -163,7 +163,7 @@ export default class Login extends React.Component {
                                     <span>Login Facebook</span>
                                 </LoginButton>
                             </FacebookProvider>
-                            <a href="#" onClick={(e)=>{e.preventDefault(); window.FB.logout()}}>logout</a>
+                            <a href="#" onClick={(e)=>{e.preventDefault(); window.FB.logout()}}>logoutt</a>
 
                             {/* 589858161579560 */}
                         </Col>
