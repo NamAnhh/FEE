@@ -7,22 +7,25 @@ import { token } from '../../../API/token'
 import { url } from '../../../API/url'
 import styles from './styles';
 import "./styles.css";
+import { _validemail } from '../../helpers/index'
 
 import GoogleLogin from 'react-google-login';
 import { GoogleLogout } from 'react-google-login';
-import { FacebookProvider, LoginButton } from 'react-facebook';
 
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            visible: false
+            visible: false,
+            email: '',
+            password: ''
         }
     }
 
     componentDidMount() {
         localStorage.removeItem("loginGoogle");
+        localStorage.removeItem("login");
     }
 
     //show modal
@@ -76,45 +79,50 @@ export default class Login extends React.Component {
         this.props.history.push("/register")
     }
 
-    handleLogoutFB = () => {
-        this.setState({
-            
-        })
-    }
+    handleChangeEmail = (event) => { this.setState({ ...this.state, email: event.target.value }) }
+    handleChangePassword = (event) => { this.setState({ ...this.state, password: event.target.value }) }
 
-    responseFacebook(response) {
-        console.log(response)
-        let params = {
-            "user": {
-                "email": response.profile.email,
-                "username": response.tokenDetail.userID,
-                "image": response.profile.picture.data.url,
+    handleSubmit = () => {
+        const { email, password } = this.state
+        let loginObj = {
+            "user":{
+                "email":email,
+                "password": password
             }
         }
 
-        return fetch(url + "users/loginSocial", {
-            method: 'post',
-            body: JSON.stringify(params),
-            headers: {
-                // "Authorization": token,
-                "Content-Type": "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(localStorage.setItem("loginFB", JSON.stringify(response.profile)))
-            .then(alert("Đăng nhập thành công"))
-            .then(this.props.history.push("/"))
-    }
-    
-    onLogout() {
-        window.FB.logout()
+        if (email !== '' && password !== '' && _validemail(email)) {
+            return fetch(url + "users/login", {
+                method: 'post',
+                body: JSON.stringify(loginObj),
+                headers: {
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    response.json()
+                    console.log('response', response)
+                    if(response.status === 422){
+                        alert('email or password invalid')
+                    }
+                    else if (response.status === 200) {
+                        localStorage.setItem("login", JSON.stringify(loginObj))
+                        alert('Đăng nhập thành công')
+                        this.props.history.push('/')
+                    }
+                })
         }
+        else {
+            alert('Bạn phải điền đầy đủ thông tin')
+        }
+    }
 
     render() {
-        const { searchText, books } = this.state
+        const { email, password } = this.state
         return (
             <div>
-                <h2>Login</h2>
+                <h2 style={{ textAlign: "center", marginLeft: '5vw' }}>Login</h2>
                 <Divider></Divider>
                 <Row>
                     <Col span={6}>
@@ -123,51 +131,49 @@ export default class Login extends React.Component {
                     <Col span={12}>
                         <Form labelCol={{ span: 6 }}>
                             <Form.Item style={styles.info} label="Email">
-                                <Input className="input" onChange={this.handleChangeName} value="a" />
+                                <Input className="input" onChange={this.handleChangeEmail} value={email} />
                             </Form.Item>
-                            {/* {name === '' && <span style={{ marginLeft: '12vw', color: 'red' }}>Name is required</span>}*/}
+                            {/* {email === '' && <span style={{ marginLeft: '12vw', color: 'red' }}>Email is required</span>} */}
+                             {email !== '' && !_validemail(email) && <span style={{ marginLeft: '12vw', color: 'red' }}>Email is not format</span>}
                             <Form.Item style={styles.info} label="Password">
-                                <Input className="input" onChange={this.handleChangeName} value="a" />
+                                <Input className="input" type="password" onChange={this.handleChangePassword} value={password} />
                             </Form.Item>
-                            {/* {name === '' && <span style={{ marginLeft: '12vw', color: 'red' }}>Name is required</span>}*/}
+                            {/* {password === '' && <span style={{ marginLeft: '12vw', color: 'red' }}>Password is required</span>} */}
+                            <Form.Item style={styles.info} label=" ">
+                                <Button style={styles.btnLogin} onClick={this.handleSubmit} type="primary">Đăng nhập</Button>
+                            </Form.Item>
                         </Form>
-                        <Col span={21} style={styles.colButton}>
-                            <Button onClick={this.handleSubmit} type="primary">Đăng nhập</Button>
-                            <Button onClick={this.handleLogoutFB} type="primary">Logout fb</Button>
-                            <Button onClick={this.handleSubmit} style={styles.btnCancel} type="primary">Đăng nhập google</Button>
-                            <Button onClick={this.handleRegister} style={styles.btnCancel} type="danger">Đăng ký</Button>
-                            <Button onClick={this.handleSendMail} style={styles.btnCancel} type="danger">Go To DashBoard</Button>
+                        <div>
+                            <div style={styles.btnRegister}>
+                                <Button onClick={this.handleRegister} type="link">Đăng ký ngay</Button>
+                            </div>
+                            <div>
+                                <p style={{ textAlign: 'center', marginLeft: '6vw', marginTop: '30px' }}>Or sign up using</p>
+                            </div>
+                        </div>
+                        <div style={styles.colButton}>
                             <GoogleLogin
                                 clientId="450425733304-0etv6pg3mbiq2bvmje5ldcd1uros0u3h.apps.googleusercontent.com"
                                 render={renderProps => (
-                                    <Button style={styles.btnCancel} type="primary" onClick={renderProps.onClick} disabled={renderProps.disabled}>Login google</Button>
+                                    <Button style={styles.btnLoginGmail} shape="circle" icon="google" type="danger" onClick={renderProps.onClick} disabled={renderProps.disabled}></Button>
                                 )}
                                 onSuccess={this.responseGoogle}
                                 onFailure={this.responseGoogle}
                                 cookiePolicy={'single_host_origin'}
                             />
-                            <GoogleLogout
-                                clientId="450425733304-0etv6pg3mbiq2bvmje5ldcd1uros0u3h.apps.googleusercontent.com"
-                                render={renderProps => (
-                                    <Button style={styles.btnCancel} type="primary" onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout google</Button>
-                                )}
-                                onLogoutSuccess={this.logout}
-                            >
-                            </GoogleLogout>
-                            <FacebookProvider appId="589858161579560">
-                                <LoginButton
-                                    scope="email"
-                                    onCompleted={this.responseFacebook}
-                                    onError={this.handleError}
-                                >
-                                    <span>Login Facebook</span>
-                                </LoginButton>
-                            </FacebookProvider>
-                            <a href="#" onClick={(e)=>{e.preventDefault(); window.FB.logout()}}>logoutt</a>
 
                             {/* 589858161579560 */}
-                        </Col>
+                        </div>
                     </Col>
+
+                    {/* <GoogleLogout
+                        clientId="450425733304-0etv6pg3mbiq2bvmje5ldcd1uros0u3h.apps.googleusercontent.com"
+                        render={renderProps => (
+                            <Button style={styles.btnCancel} type="primary" onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout google</Button>
+                        )}
+                        onLogoutSuccess={this.logout}
+                    >
+                    </GoogleLogout> */}
                 </Row>
             </div >
 

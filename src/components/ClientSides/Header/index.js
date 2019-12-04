@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Avatar, Form, Input, Radio, Select, Button, Divider, Menu, Dropdown, Icon } from "antd";
+import { Row, Col, Avatar, Form, Input, Radio, Select, Button, Divider, Menu, Dropdown, Icon  } from "antd";
 import "antd/dist/antd.css";
 import { _validnumber } from '../../helpers/index';
 import "./styles.css";
@@ -33,21 +33,27 @@ export default class Header extends React.Component {
         super(props)
 
         this.state = {
-            imgSrc: "data:image/jpeg;base64,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",
             user:{}
         };
     }
 
     componentDidMount() {
-        if (localStorage.getItem("loginFB")) {
+        if (localStorage.getItem("loginGoogle")) {
+            console.log('loginGoogle',JSON.parse(localStorage.getItem("loginGoogle")))
             this.setState({
-                user: JSON.parse(localStorage.getItem("loginFB")),
+                user: JSON.parse(localStorage.getItem("loginGoogle"))   
+            })
+        }
+        if (localStorage.getItem("login")) {
+            console.log('login',JSON.parse(localStorage.getItem("login")))
+            this.setState({
+                user: JSON.parse(localStorage.getItem("login"))   
             })
         }
     }
 
     render() {
-        const { imgSrc,user } = this.state
+        const { user } = this.state
         return (
             <div className="container">
                 <div className="main-container">
@@ -62,11 +68,12 @@ export default class Header extends React.Component {
                         </Col>
                         <Col span={6}>
                             <div className="container-right">
-                                {localStorage.getItem("loginFB") && <Dropdown overlay={menu} placement="bottomRight">
-                                    <img className="img" src={imgSrc} />
+                                {(localStorage.getItem("loginGoogle") || localStorage.getItem("login")) && <Dropdown overlay={menu} placement="bottomRight">
+                                    <img className="img" src={user.imageUrl} />
                                 </Dropdown>}
-                                {localStorage.getItem("loginFB") && <p style={{color:'white',marginTop:'10px'}}>{user.name} </p>}
-                                {!localStorage.getItem("loginFB") && <Link style={{ color: 'white' }} to="/login">Đăng nhập</Link>}
+                                {localStorage.getItem("loginGoogle") && <p style={{color:'white',marginTop:'10px'}}>{user.name} </p>}
+                                {localStorage.getItem("login") && <p style={{color:'white',marginTop:'10px'}}>Chào bạn </p>}
+                                {!localStorage.getItem("loginGoogle") && !localStorage.getItem("login") && <Link style={{ color: 'white' }} to="/login">Đăng nhập</Link>}
                             </div>
                         </Col>
                     </Row>

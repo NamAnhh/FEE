@@ -137,6 +137,9 @@ export default class Book extends React.Component {
         })
             .then(response => response.json())
             .then(data => (
+                data.data.forEach(x => {
+                    x.categoryId = x.bookList[0]._id
+                }),
                 this.setState({
                     books: data.data,
                 }),
@@ -192,7 +195,7 @@ export default class Book extends React.Component {
                                 <ExcelColumn label="Id" value="_id"/>
                                 <ExcelColumn label="Tên sách" value="name" />
                                 <ExcelColumn label="Tiêu đề" value="title" />
-                                <ExcelColumn label="Tên loại sách" value="bookList[0].name" />
+                                <ExcelColumn label="Mã loại sách" value="categoryId" />
                                 <ExcelColumn label="Giá bán" value="price" />
                                 <ExcelColumn label="Số lượng" value="quantity" />
                                 <ExcelColumn label="Trạng thái" value="status" />

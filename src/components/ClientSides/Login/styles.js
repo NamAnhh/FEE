@@ -14,11 +14,23 @@ export default {
     },
     colButton: {
         display: 'flex',
-        justifyContent: 'flex-end',
-        paddingRight: 5,
+        justifyContent: 'center',
         marginTop: 10
     },
     btnCancel: {
         marginLeft: '10px'
+    },
+    btnRegister:{
+        display: 'flex',
+        justifyContent: 'center',
+        marginLeft: '6vw'
+    },
+    btnLogin:{
+        marginTop: "20px",
+        borderRadius: '20px',
+        width:'30vw'
+    },
+    btnLoginGmail:{
+        marginLeft:'6vw'
     },
 }

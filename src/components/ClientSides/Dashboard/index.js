@@ -1,13 +1,15 @@
 import React from 'react'
-import { Row, Col, Avatar, Form, Input, Radio, Select, Button, Divider } from "antd";
+import { Row, Col, Avatar, Form, Input, Radio, Select, Button, Divider, Card } from "antd";
 import "antd/dist/antd.css";
 import { _validnumber } from '../../helpers/index';
 import { url } from '../../../API/url'
 import { token } from '../../../API/token'
 import Header from '../Header/index'
+import styles from './styles'
 
 const { TextArea } = Input;
 const { Option } = Select;
+const { Meta } = Card;
 
 export default class DashBoard extends React.Component {
 
@@ -15,33 +17,61 @@ export default class DashBoard extends React.Component {
         super(props)
 
         this.state = {
-            user:{}
+            books: []
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchData()
     }
 
     fetchData = () => {
-        if (localStorage.getItem("loginGoogle")) {
-            this.setState({user: JSON.parse(localStorage.getItem("loginGoogle"))})
-        }
-        if (localStorage.getItem("loginFB")) {
-            this.setState({user: JSON.parse(localStorage.getItem("loginFB"))})
-        }
+        fetch(url + 'books', {
+            method: 'get',
+            headers: {
+                "Authorization": token,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(data => (
+                data.data.forEach(x => {
+                    x.categoryId = x.bookList[0]._id
+                }),
+                this.setState({
+                    books: data.data,
+                }),
+                console.log('getBook API ', this.state.books)
+            ))
+    }
+
+    _gotoCart = (id) =>{
+        alert(`Book id: ${id}`)
     }
 
     render() {
-        const {user} = this.state
+        const { books } = this.state
+        const listItems = books.map((x) =>
+            <Col style={styles.col} span={6} key={x._id}>
+                <Card
+                    hoverable
+                    onClick={() => this._gotoCart(x._id)}
+                    style={{ width: 248, height: 356 }}
+                    cover={<img alt="example" height="200px" width="200px" src={x.image} />}
+                >
+                    <Meta title={x.name} description={x.price.concat(",000 đ")} />
+                </Card>
+            </Col>
+        );
         return (
-            <div>
+            <div style={{backgroundColor:"#EDEEF2"}}>
                 <div>
                     <Header />
                 </div>
-                <div style={{textAlign:'center'}}>
-                    {localStorage.getItem("loginGoogle")&& <h2>Xin chào {user.familyName} {user.givenName}</h2>}
-                    {localStorage.getItem("loginFB")&& <h2>Xin chào {user.name} </h2>}
+                <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                    <Row>
+                        {listItems}
+                    </Row>
                 </div>
             </div>
         )
