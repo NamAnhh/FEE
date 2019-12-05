@@ -1,14 +1,30 @@
 import React from 'react'
-import { Row, Col, Avatar, Form, Input, Radio, Select, Button, Divider, Menu, Dropdown, Icon  } from "antd";
+import { Row, Col, Form, Input, Radio, Select, Button, Divider, Menu, Dropdown, Icon, Modal, List, Avatar } from "antd";
 import "antd/dist/antd.css";
 import { _validnumber } from '../../helpers/index';
 import "./styles.css";
+import { withRouter } from "react-router-dom";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
 } from "react-router-dom";
+
+const data = [
+    {
+        title: 'Ant Design Title 1',
+    },
+    {
+        title: 'Ant Design Title 2',
+    },
+    {
+        title: 'Ant Design Title 3',
+    },
+    {
+        title: 'Ant Design Title 4',
+    },
+];
 
 const menu = (
     <Menu>
@@ -27,29 +43,63 @@ const menu = (
     </Menu>
 );
 
-export default class Header extends React.Component {
+class Header extends React.Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-            user:{}
+            user: {},
+            visible: false
         };
     }
 
+    showModal = () => {
+        if ((localStorage.getItem("loginGoogle")) || (localStorage.getItem("login"))) {
+            this.setState({
+                visible: true,
+            });
+        }
+        else {
+            this.props.history.push("/login");
+        }
+    };
+
+    handleOk = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
     componentDidMount() {
         if (localStorage.getItem("loginGoogle")) {
-            console.log('loginGoogle',JSON.parse(localStorage.getItem("loginGoogle")))
+            console.log('loginGoogle', JSON.parse(localStorage.getItem("loginGoogle")))
             this.setState({
-                user: JSON.parse(localStorage.getItem("loginGoogle"))   
+                user: JSON.parse(localStorage.getItem("loginGoogle"))
             })
         }
         if (localStorage.getItem("login")) {
-            console.log('login',JSON.parse(localStorage.getItem("login")))
+            console.log('login', JSON.parse(localStorage.getItem("login")))
             this.setState({
-                user: JSON.parse(localStorage.getItem("login"))   
+                user: JSON.parse(localStorage.getItem("login"))
             })
         }
+    }
+
+    handleInc = () => {
+        alert('tăng')
+    }
+
+    handleDec = () => {
+        alert('giảm')
     }
 
     render() {
@@ -71,14 +121,44 @@ export default class Header extends React.Component {
                                 {(localStorage.getItem("loginGoogle") || localStorage.getItem("login")) && <Dropdown overlay={menu} placement="bottomRight">
                                     <img className="img" src={user.imageUrl} />
                                 </Dropdown>}
-                                {localStorage.getItem("loginGoogle") && <p style={{color:'white',marginTop:'10px'}}>{user.name} </p>}
-                                {localStorage.getItem("login") && <p style={{color:'white',marginTop:'10px'}}>Chào bạn </p>}
+                                {localStorage.getItem("loginGoogle") && <p style={{ color: 'white', marginTop: '10px' }}>{user.name} </p>}
+                                {localStorage.getItem("login") && <p style={{ color: 'white', marginTop: '10px' }}>Chào bạn </p>}
                                 {!localStorage.getItem("loginGoogle") && !localStorage.getItem("login") && <Link style={{ color: 'white' }} to="/login">Đăng nhập</Link>}
+                                <Button onClick={this.showModal} style={{ marginLeft: '5px' }} shape="circle" icon="shopping-cart" />
                             </div>
                         </Col>
                     </Row>
                 </div>
+                <Modal
+                    title="Giỏ hàng của bạn"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                    {/* ListGioHang */}
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={data}
+                        renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={<Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPRmetB7XjxiLc6afBwXEHAzGr1GtgWkoV_Zvgo6kg1RhApBqIEg&s" />}
+                                    title={<a href="https://ant.design">{item.title}</a>}
+                                    description="Ant Design, a design"
+                                />
+                                <div style={{ display: 'flex', flexDirection: 'row',alignItems:'center' }}>
+                                    <Icon onClick={this.handleDec} type="minus" style={{color:"#FF4D4F",cursor:'pointer'}} />&nbsp;
+                                    <span><b>1</b></span>&nbsp;
+                                    <Icon onClick={this.handleInc} style={{color:"#1890FF",cursor:'pointer'}} type="plus" />                                 
+                                </div>
+                            </List.Item>
+                        )}
+                    />
+                    {/* end ListGioHang */}
+                </Modal>
             </div>
         )
     }
 }
+
+export default withRouter(Header)

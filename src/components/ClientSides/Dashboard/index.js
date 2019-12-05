@@ -60,6 +60,7 @@ export default class DashBoard extends React.Component {
                     cover={<img alt="example" height="200px" width="200px" src={x.image} />}
                 >
                     <Meta title={x.name} description={x.price.concat(",000 đ")} />
+                    <Button style={{ margin: '25px 0 0 5px',  }} type="primary" >Add to cart</Button>
                 </Card>
             </Col>
         );
