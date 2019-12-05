@@ -13,6 +13,8 @@ import Login from './components/ClientSides/Login/index'
 import DashBoard from './components/ClientSides/Dashboard/index'
 import Register from './components/ClientSides/Register/index'
 import Header from './components/ClientSides/Header/index'
+import ActiveEmail from './components/ClientSides/ActiveEmail/index'
+
 function App() {
   return (
     <Router>
@@ -24,6 +26,7 @@ function App() {
           <Route path="/books" component={Book} />
           <Route path="/header" component={Header} />
           <Route path="/register" component={Register} />
+          <Route path="/active/:id" component={ActiveEmail} />
           <Route path="/" component={DashBoard} />
         </Switch>
       </div>

@@ -107,7 +107,7 @@ export default class Login extends React.Component {
                         alert('email or password invalid')
                     }
                     else if (response.status === 200) {
-                        localStorage.setItem("login", JSON.stringify(loginObj))
+                        localStorage.setItem("login", JSON.stringify(loginObj.user.email))
                         alert('Đăng nhập thành công')
                         this.props.history.push('/')
                     }

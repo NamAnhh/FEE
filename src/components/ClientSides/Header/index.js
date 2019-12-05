@@ -80,6 +80,7 @@ class Header extends React.Component {
     };
 
     componentDidMount() {
+        console.log("data",localStorage.getItem("loginGoogle"),localStorage.getItem("login"))
         if (localStorage.getItem("loginGoogle")) {
             console.log('loginGoogle', JSON.parse(localStorage.getItem("loginGoogle")))
             this.setState({
