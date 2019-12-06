@@ -85,8 +85,8 @@ export default class Login extends React.Component {
     handleSubmit = () => {
         const { email, password } = this.state
         let loginObj = {
-            "user":{
-                "email":email,
+            "user": {
+                "email": email,
                 "password": password
             }
         }
@@ -103,7 +103,7 @@ export default class Login extends React.Component {
                 .then(response => {
                     response.json()
                     console.log('response', response)
-                    if(response.status === 422){
+                    if (response.status === 422) {
                         alert('email or password invalid')
                     }
                     else if (response.status === 200) {
@@ -134,7 +134,7 @@ export default class Login extends React.Component {
                                 <Input className="input" onChange={this.handleChangeEmail} value={email} />
                             </Form.Item>
                             {/* {email === '' && <span style={{ marginLeft: '12vw', color: 'red' }}>Email is required</span>} */}
-                             {email !== '' && !_validemail(email) && <span style={{ marginLeft: '12vw', color: 'red' }}>Email is not format</span>}
+                            {email !== '' && !_validemail(email) && <span style={{ marginLeft: '12vw', color: 'red' }}>Email is not format</span>}
                             <Form.Item style={styles.info} label="Password">
                                 <Input className="input" type="password" onChange={this.handleChangePassword} value={password} />
                             </Form.Item>
@@ -162,6 +162,14 @@ export default class Login extends React.Component {
                                 cookiePolicy={'single_host_origin'}
                             />
 
+                            <GoogleLogout
+                                clientId="450425733304-0etv6pg3mbiq2bvmje5ldcd1uros0u3h.apps.googleusercontent.com"
+                                render={renderProps => (
+                                    <Button style={styles.btnCancel} shape="circle" icon="logout" onClick={renderProps.onClick} disabled={renderProps.disabled}></Button>
+                                )}
+                                onLogoutSuccess={this.logout}
+                            />
+
                             {/* 589858161579560 */}
                         </div>
                     </Col>
@@ -169,11 +177,10 @@ export default class Login extends React.Component {
                     {/* <GoogleLogout
                         clientId="450425733304-0etv6pg3mbiq2bvmje5ldcd1uros0u3h.apps.googleusercontent.com"
                         render={renderProps => (
-                            <Button style={styles.btnCancel} type="primary" onClick={renderProps.onClick} disabled={renderProps.disabled}>Logout google</Button>
+                            <Button style={styles.btnCancel} shape="circle" icon="logout" onClick={renderProps.onClick} disabled={renderProps.disabled}></Button>
                         )}
                         onLogoutSuccess={this.logout}
-                    >
-                    </GoogleLogout> */}
+                    /> */}
                 </Row>
             </div >
 
